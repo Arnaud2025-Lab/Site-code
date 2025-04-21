@@ -32,7 +32,7 @@ app.post('/envoyer-code', async (req, res) => {
   }
 
   try {
-    const secretKey = "6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws";
+    const secretKey = '6Ld23h8rAAAAALUmYCTLrghIZ8s47qdO8wGmQEcg';
     const response = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`
     );
