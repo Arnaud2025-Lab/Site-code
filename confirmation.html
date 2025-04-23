@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activation réussie</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .confirmation-box {
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+    .checkmark {
+      font-size: 60px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+    .btn {
+      background-color: #1976d2;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background-color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="confirmation-box">
+    <div class="checkmark">✔</div>
+    <p class="card-code">Carte activée : **** **** **** {{lastDigits}}</p>
+    <p>Merci d’avoir utilisé notre plateforme.</p>
+    <a href="/" class="btn">Retour à l'accueil</a>
+  </div>
+</body>
+</html>

